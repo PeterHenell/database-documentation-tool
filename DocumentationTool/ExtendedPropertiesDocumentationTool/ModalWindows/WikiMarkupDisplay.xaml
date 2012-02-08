@@ -1,0 +1,18 @@
+﻿<Window x:Class="ExtendedPropertiesDocumentationTool.ModalWindows.WikiMarkupDisplay"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Copy paste this into Wiki as Wikimarkup">
+    <StackPanel>
+        <ToolBar>
+            <Button Command="{x:Static ApplicationCommands.Cut}">Cut</Button>
+            <Button Command="{x:Static ApplicationCommands.Copy}">Copy</Button>
+            <Button Command="{x:Static ApplicationCommands.Paste}">Paste</Button>
+            <Button Command="{x:Static ApplicationCommands.SelectAll}">Select All</Button>
+        </ToolBar>
+        <TextBox x:Name="WikiTextbox" 
+             AcceptsReturn="True"
+             TextWrapping="Wrap"
+             VerticalScrollBarVisibility="Auto"
+             ></TextBox>
+    </StackPanel>
+</Window>
