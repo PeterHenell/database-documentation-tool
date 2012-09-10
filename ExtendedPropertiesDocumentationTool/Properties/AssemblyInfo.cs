@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("ExtendedPropertiesDocumentationTool")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyCompany("Peter Henell")]
 [assembly: AssemblyProduct("ExtendedPropertiesDocumentationTool")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2011")]
+[assembly: AssemblyCopyright("Copyright © Peter Henell 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

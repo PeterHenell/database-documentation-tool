@@ -1,7 +1,7 @@
 ﻿<Window x:Class="ExtendedPropertiesDocumentationTool.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Netent Database documentation tool v1.7"  Width="1280" Height="900">
+        Title="Peter Henell Database documentation tool v1.7"  Width="1280" Height="900">
     <Grid>
 
         <Grid.ColumnDefinitions>

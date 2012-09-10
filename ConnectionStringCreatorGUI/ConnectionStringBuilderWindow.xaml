@@ -1,0 +1,15 @@
+﻿<Window x:Class="ConnectionStringCreatorGUI.ConnectionStringBuilderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Choose connection" 
+        xmlns:my="clr-namespace:ConnectionStringCreatorGUI"
+        xmlns:wb="clr-namespace:ConnectionStringCreatorGUI.Behaviors"
+        wb:WindowBehaviors.IsOpen="{Binding IsOpen}"
+        SizeToContent="WidthAndHeight"
+        >
+    <StackPanel Margin="5 5 5 5">
+        <my:SqlConnectionStringBuilder x:Name="ConnBuilder" ConnectionString="{Binding Path=ConnectionString, Mode=TwoWay}"  HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <StackPanel x:Name="ContentStackPanel" />
+        <Button Command="{Binding Path=OkClickCommand}" IsDefault="True">OK</Button>
+    </StackPanel>
+</Window>

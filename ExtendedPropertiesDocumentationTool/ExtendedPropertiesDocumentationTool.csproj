@@ -120,7 +120,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\SQLConnectionStringBuilderGUI\ConnectionStringCreatorGUI\ConnectionStringCreatorGUI.csproj">
+    <ProjectReference Include="..\ConnectionStringCreatorGUI\ConnectionStringCreatorGUI.csproj">
       <Project>{7319917A-8A1B-41CA-99BC-6E14C324DC63}</Project>
       <Name>ConnectionStringCreatorGUI</Name>
     </ProjectReference>
