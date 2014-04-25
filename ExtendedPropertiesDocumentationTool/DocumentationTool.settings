@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="ConnectionString" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Data Source=DB2-Cluster01\DB2;Initial Catalog=SAM_Scrum2_Dev;Integrated Security=SSPI;</Value>
+      <Value Profile="(Default)">Data Source=localhost;Initial Catalog=DbTrunk;Integrated Security=SSPI;</Value>
     </Setting>
   </Settings>
 </SettingsFile>
