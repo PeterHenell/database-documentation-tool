@@ -6,6 +6,7 @@ using System.Text;
 using DatabaseMetadata.Entities;
 using System.Collections.ObjectModel;
 using System.Data.Common;
+using ExtendedPropertiesDocumentationTool;
 
 namespace DatabaseMetadata.DataAccess
 {
@@ -81,7 +82,7 @@ namespace DatabaseMetadata.DataAccess
         {
            ObservableCollection<TableMetadata> tables = new ObservableCollection<TableMetadata>();
 
-            string sql = @"
+            string sql = string.Format(@"
 ;
 with InformationSchemaTables as 
 (	
@@ -104,13 +105,13 @@ SELECT TABLE_NAME
                             InformationSchemaTables iss
                             OUTER APPLY
                             (
-	                            SELECT VALUE FROM fn_listextendedProperty('Description', 
+	                            SELECT VALUE FROM fn_listextendedProperty('{0}', 
 		                                'SCHEMA', iss.TABLE_SCHEMA
 		                                ,'TABLE', iss.TABLE_NAME
 		                                , NULL, NULL)
                             ) descr
                                 
-                                order by table_schema, table_name";
+                                order by table_schema, table_name", ApplicationSettings.Default.ExtendedPropKey);
 
 
             using (DbCommand cmd = CommandFactory.Create(sql, connStr))

@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections.ObjectModel;
 using DatabaseMetadata.Entities;
 using System.Data.Common;
+using ExtendedPropertiesDocumentationTool;
 
 namespace DatabaseMetadata.DataAccess
 {
@@ -27,20 +28,20 @@ namespace DatabaseMetadata.DataAccess
         {
             ObservableCollection<StoredProcedureMetaData> spmd = new ObservableCollection<StoredProcedureMetaData>();
 
-            string sql = @"select  name ,
+            string sql = string.Format(@"select  name ,
         SCHEMA_NAME(schema_id) as SchemaName
         , Value as Description
 		, CASE WHEN VALUE IS NULL THEN CAST(0 AS BIT) ELSE CAST(1 AS BIT) END AS HasDescription
 from sys.objects 
 outer apply
 (	
-	select value from fn_listextendedProperty('Description',
+	select value from fn_listextendedProperty('{0}',
 	'SCHEMA', SCHEMA_NAME(schema_id)
 	,'PROCEDURE', name, NULL, NULL)
 ) descr
 
 where type = 'p' and is_ms_shipped = 0
-order by schema_id, name";
+order by schema_id, name", ApplicationSettings.Default.ExtendedPropKey);
 
             using (DbCommand cmd = CommandFactory.Create(sql, connStr))
             {

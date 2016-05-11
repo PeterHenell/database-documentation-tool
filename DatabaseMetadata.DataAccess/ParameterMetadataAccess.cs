@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 
 using DatabaseMetadata.Entities;
 using System.Data.Common;
+using ExtendedPropertiesDocumentationTool;
 
 namespace DatabaseMetadata.DataAccess
 {
@@ -23,12 +24,12 @@ namespace DatabaseMetadata.DataAccess
                                         from INFORMATION_SCHEMA.PARAMETERS
                                         outer apply
                                         (	
-	                                        select value from fn_listextendedProperty('Description',
+	                                        select value from fn_listextendedProperty('{2}',
 	                                         'SCHEMA', SPECIFIC_SCHEMA
 	                                        , 'PROCEDURE', SPECIFIC_NAME
 	                                        , 'PARAMETER', PARAMETER_NAME)
                                         ) descr
-                                        where SPECIFIC_NAME = '{0}' and SPECIFIC_SCHEMA = '{1}' ", storedProcedureMetadata.Level1Name, storedProcedureMetadata.Schema);
+                                        where SPECIFIC_NAME = '{0}' and SPECIFIC_SCHEMA = '{1}' ", storedProcedureMetadata.Level1Name, storedProcedureMetadata.Schema, ApplicationSettings.Default.ExtendedPropKey);
 
 
             using (DbCommand cmd = CommandFactory.Create(sql, connStr))

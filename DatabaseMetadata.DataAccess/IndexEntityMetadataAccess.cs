@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections.ObjectModel;
 using DatabaseMetadata.Entities;
 using System.Data.Common;
+using ExtendedPropertiesDocumentationTool;
 
 namespace DatabaseMetadata.DataAccess
 {
@@ -31,7 +32,7 @@ FROM
 	sys.indexes 
 OUTER APPLY
 (
-	SELECT VALUE FROM FN_LISTEXTENDEDPROPERTY('Description', 
+	SELECT VALUE FROM FN_LISTEXTENDEDPROPERTY('{2}', 
 		 'SCHEMA', '{1}'
 		 ,'TABLE', '{0}'
 		 ,CASE is_unique WHEN 1 THEN 'CONSTRAINT' ELSE 'INDEX' END, name)
@@ -40,7 +41,7 @@ OUTER APPLY
 WHERE 
 	object_id = OBJECT_ID('{1}.{0}')
     AND name IS NOT NULL	 
-", tableName, tableSchema);
+", tableName, tableSchema, ApplicationSettings.Default.ExtendedPropKey);
 
 
             using (DbCommand cmd = CommandFactory.Create(sql, connStr))

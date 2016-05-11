@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 
 using DatabaseMetadata.Entities;
 using System.Data.Common;
+using ExtendedPropertiesDocumentationTool;
 
 namespace DatabaseMetadata.DataAccess
 {
@@ -33,7 +34,7 @@ FROM
 	INFORMATION_SCHEMA.COLUMNS iss
 OUTER APPLY
 (
-	SELECT VALUE FROM fn_listextendedProperty('Description', 
+	SELECT VALUE FROM fn_listextendedProperty('{3}', 
 		 'SCHEMA', iss.TABLE_SCHEMA
 		 ,'{2}', iss.TABLE_NAME
 		 , 'COLUMN', iss.Column_Name)
@@ -41,7 +42,7 @@ OUTER APPLY
 ) descr
 WHERE 
 	table_name = '{0}' 
-	AND table_schema = '{1}'", tableName, tableSchema, belongToType);
+	AND table_schema = '{1}'", tableName, tableSchema, belongToType, ApplicationSettings.Default.ExtendedPropKey);
 
 
             using (DbCommand cmd = CommandFactory.Create(sql, connStr))

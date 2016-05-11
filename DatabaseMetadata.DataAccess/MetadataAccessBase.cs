@@ -5,6 +5,7 @@ using System.Text;
 
 using System.Data.Common;
 using DatabaseMetadata.Entities;
+using ExtendedPropertiesDocumentationTool;
 
 namespace DatabaseMetadata.DataAccess
 {
@@ -14,10 +15,12 @@ namespace DatabaseMetadata.DataAccess
         string sqlUpdate = "sys.sp_updateextendedproperty";
         string sqlDrop = "sys.sp_dropextendedproperty";
 
-
         protected bool SaveDescription(SaveModes saveMode, string connStr, Level1Types level1Type, string descriptionValue, string objectSchema, string level1Name, Level2Types level2Type, string level2Name)
         {
             string sql = string.Empty;
+
+            if (string.IsNullOrEmpty(ApplicationSettings.Default.ExtendedPropKey))
+                throw new ArgumentException("The ExtendedPropertyKey must have a value. Please change it in the Options");
 
             switch (saveMode)
             {
@@ -45,7 +48,7 @@ namespace DatabaseMetadata.DataAccess
                         cmd.Parameters.Add(CommandFactory.CreateParameter("@value", descriptionValue));
                     }
 
-                    cmd.Parameters.Add(CommandFactory.CreateParameter("@name", "Description"));
+                    cmd.Parameters.Add(CommandFactory.CreateParameter("@name", ApplicationSettings.Default.ExtendedPropKey));
                     cmd.Parameters.Add(CommandFactory.CreateParameter("@level0type", "SCHEMA"));
                     cmd.Parameters.Add(CommandFactory.CreateParameter("@level0name", objectSchema));
                     cmd.Parameters.Add(CommandFactory.CreateParameter("@level1type", level1Type.ToString()));
@@ -54,7 +57,6 @@ namespace DatabaseMetadata.DataAccess
                     {
                         cmd.Parameters.Add(CommandFactory.CreateParameter("@level2type", level2Type.ToString()));
                         cmd.Parameters.Add(CommandFactory.CreateParameter("@level2name", level2Name));
-
                     }
 
                     cmd.ExecuteNonQuery();
@@ -97,12 +99,5 @@ namespace DatabaseMetadata.DataAccess
             }
 
         }
-
-
-        //protected bool SaveDescription(SaveModes saveMode, string connStr, Level1Types level1Type, string descriptionValue, string objectSchema, string objectName)
-        //{
-        //    return SaveDescription(saveMode, connStr, level1Type, descriptionValue, objectSchema, objectName, Level2Types.NULL, string.Empty);
-        //}
-           
     }
 }

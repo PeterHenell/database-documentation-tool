@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using DatabaseMetadata.Entities;
 using System.Data.Common;
+using ExtendedPropertiesDocumentationTool;
 
 namespace DatabaseMetadata.DataAccess
 {
@@ -47,7 +48,7 @@ namespace DatabaseMetadata.DataAccess
         {
             StringBuilder sb = new StringBuilder();
             string result = string.Empty;
-            string sql = @"
+            string sql = string.Format(@"
 ;with InformationSchemaTables as 
 (	
 	  SELECT		    
@@ -70,7 +71,7 @@ CROSS APPLY(
 		UNION ALL
 
 		SELECT '|' + ISNULL( 
-					( SELECT CAST(VALUE AS NVARCHAR(MAX)) FROM fn_listextendedProperty('Description', 
+					( SELECT CAST(VALUE AS NVARCHAR(MAX)) FROM fn_listextendedProperty('{0}', 
 					 'SCHEMA', iss.TABLE_SCHEMA
 					 ,'TABLE', iss.TABLE_NAME
 					 , CASE is_unique WHEN 1 THEN 'CONSTRAINT' ELSE 'INDEX' END, name))
@@ -112,7 +113,7 @@ CROSS APPLY(
 
 ) AllTheGoodies
 
-";
+", ApplicationSettings.Default.ExtendedPropKey);
             string whereStatement = "";
             if (tmd != null)
             {
@@ -146,7 +147,7 @@ CROSS APPLY(
             string result = string.Empty;
             StringBuilder sb = new StringBuilder();
 
-            string sql = @" 
+            string sql = string.Format(@" 
                     SELECT 
                         WikiMarkup
      
@@ -161,7 +162,7 @@ CROSS APPLY(
                                     ISNULL( (SELECT    CAST(VALUE AS NVARCHAR(MAX))
                                     FROM 
                                         fn_listextendedProperty(
-                                            'Description'
+                                            '{0}'
                                             , 'SCHEMA', SCHEMA_NAME(so.schema_id)
                                             ,'PROCEDURE', so.Name
                                             , NULL, NULL)), '{color:#ff0000}{*}DESCRIPTION MISSING{*}{color}')
@@ -200,7 +201,7 @@ CROSS APPLY(
                             sys.parameters p
                         outer  APPLY
                             fn_listextendedProperty(
-                                 'Description'
+                                 '{0}'
                                 ,'SCHEMA', SCHEMA_NAME(so.schema_id) 
                                 ,'PROCEDURE', so.Name
                                 ,'PARAMETER', p.name)
@@ -222,7 +223,7 @@ CROSS APPLY(
                             (@SPName IS NULL or (name = @SPName and schema_id(@SPSchema) = schema_id))
 
                     ORDER BY 
-                        so.name";
+                        so.name", ApplicationSettings.Default.ExtendedPropKey);
 
 
 
@@ -267,7 +268,7 @@ CROSS APPLY(
 
             StringBuilder sb = new StringBuilder();
             string result = string.Empty;
-            string sql = @"
+            string sql = string.Format(@"
                             ;
 with InformationSchemaTables as 
 (	
@@ -288,7 +289,7 @@ SELECT
 		SELECT 'h2. ' + iss.TABLE_SCHEMA + '.' + iss.TABLE_NAME + ' {0}' WikiMarkup UNION ALL
 
 		SELECT ISNULL( 
-					( SELECT CAST(VALUE AS NVARCHAR(MAX)) FROM fn_listextendedProperty('Description', 
+					( SELECT CAST(VALUE AS NVARCHAR(MAX)) FROM fn_listextendedProperty('{0}', 
 					 'SCHEMA', iss.TABLE_SCHEMA
 					 ,'{0}', iss.TABLE_NAME
 					 , NULL, NULL))
@@ -298,7 +299,7 @@ SELECT
 
 		SELECT '|' + ISNULL(COLUMN_NAME,'') + '|' + ISNULL(IS_NULLABLE,'') + '|' + ISNULL(DATA_TYPE, '') + '|' + ISNULL(CAST(CHARACTER_MAXIMUM_LENGTH AS VARCHAR(50)), 'N/A')  + '|' + ISNULL(COLUMN_DEFAULT, 'none') + '|' + 
 				ISNULL(
-					(SELECT CAST(VALUE AS NVARCHAR(MAX)) FROM fn_listextendedProperty('Description', 
+					(SELECT CAST(VALUE AS NVARCHAR(MAX)) FROM fn_listextendedProperty('{0}', 
 					 'SCHEMA', iss.TABLE_SCHEMA
 					 ,'{0}', iss.TABLE_NAME
 					 , 'COLUMN', Column_Name))
@@ -308,7 +309,7 @@ SELECT
 		 WHERE TABLE_NAME = iss.TABLE_NAME
 	 ) AllTheGoodies
 	 
-                             ";
+                             ", ApplicationSettings.Default.ExtendedPropKey);
             sql = string.Format(sql, level1Type.ToString());
             string whereStatement = "";
             if (item != null)

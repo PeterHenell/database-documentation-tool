@@ -15,7 +15,7 @@ namespace ExtendedPropertiesDocumentationTool
     {
         DatabaseMetaData _dbMetaData;
         StoredProcedureMetaData _selectedSPMetadata;
-        MetadataFacade _metaAccess = new MetadataFacade();
+        MetadataFacade _metaAccess;
         
 
         public DelegateCommand<TableMetadata> SaveTableCommand { get; private set; }
@@ -34,7 +34,7 @@ namespace ExtendedPropertiesDocumentationTool
 
         public DelegateCommand<TableMetadata> CreateWikiMarkupForIndexOnSelectedTableCommand { get; private set; }
         public DelegateCommand CreateWikiMarkupForAllIndexesCommand { get; private set; }
-        //
+        public DelegateCommand OpenOptionsCommand { get; private set; }
 
         public StoredProcedureMetaData SelectedStoredProcedure
           {
@@ -118,7 +118,28 @@ namespace ExtendedPropertiesDocumentationTool
             } 
         }
 
+        private bool _isLoaded = false;
+        public bool IsLoaded
+        {
+            get
+            {
+                return _isLoaded;
+            }
+            set
+            {
+                _isLoaded = value;
+                OnPropertyChanged("IsLoaded");
+            }
+        }
 
+        //private ApplicationSettings _appSettings;
+        public ApplicationSettings AppSettings
+        {
+            get
+            {
+                return ApplicationSettings.Default;
+            }
+        }
         
 
         public void ReloadDBMetaData(string connStr)
@@ -127,6 +148,7 @@ namespace ExtendedPropertiesDocumentationTool
             SelectedTable = DatabaseMetaData.Tables.FirstOrDefault();
             SelectedStoredProcedure = DatabaseMetaData.StoredProcedures.FirstOrDefault();
             SelectedView = DatabaseMetaData.Views.FirstOrDefault();
+            IsLoaded = true;
         }
 
         public void SaveChangesForTable(TableMetadata table, string connStr)
@@ -137,6 +159,8 @@ namespace ExtendedPropertiesDocumentationTool
 
         public MainWindowViewModel()
         {
+            _metaAccess = new MetadataFacade();
+
             SaveTableCommand = new DelegateCommand<TableMetadata>(tmd =>
                 {
                     SaveChangesForTable(tmd, ConnectionString);
@@ -228,10 +252,14 @@ namespace ExtendedPropertiesDocumentationTool
 
                     win.Show();
 
-                }
+                }  );
 
-               
-            );
+                OpenOptionsCommand = new DelegateCommand(() =>
+                {
+                    Window win = new ExtendedPropertiesDocumentationTool.ModalWindows.ConfigurationWindow(AppSettings);
+                    win.Show();
+                });
+          
 
             SaveViewCommand = new DelegateCommand<ViewMetadata>( vw =>
                 {
@@ -259,6 +287,5 @@ namespace ExtendedPropertiesDocumentationTool
             if(PropertyChanged != null)
                 PropertyChanged.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));      
         }
-        
     }
 }

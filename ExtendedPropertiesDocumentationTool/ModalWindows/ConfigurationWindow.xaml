@@ -1,0 +1,26 @@
+﻿<Window x:Class="ExtendedPropertiesDocumentationTool.ModalWindows.ConfigurationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Options" Height="300" Width="475">
+    <Border BorderThickness="1" BorderBrush="LightGray" Margin="25">
+        <Grid Margin="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="160"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="23"/>
+                <RowDefinition Height="23"/>
+                <RowDefinition Height="23"/>
+                <RowDefinition Height="23"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Extended Prop Key:" Grid.Row="0" Grid.Column="0" />
+            <TextBox Text="{Binding ExtendedPropKey}"  Grid.Row="0" Grid.Column="1" />
+            
+            <Button Margin="3" Content="Save and Close" Click="Button_Click" Grid.Row="5" Grid.Column="1" />
+        </Grid>
+    </Border>
+</Window>

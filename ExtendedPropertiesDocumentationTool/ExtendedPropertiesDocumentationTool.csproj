@@ -56,6 +56,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ApplicationSettings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>ApplicationSettings.settings</DependentUpon>
+    </Compile>
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="DocumentationTool.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -65,6 +70,9 @@
     <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="ModalWindows\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ModalWindows\ConfigurationWindow.xaml.cs">
+      <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ModalWindows\WikiMarkupDisplay.xaml.cs">
       <DependentUpon>WikiMarkupDisplay.xaml</DependentUpon>
@@ -82,6 +90,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="ModalWindows\About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ModalWindows\ConfigurationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -109,6 +121,10 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="App.config" />
+    <None Include="ApplicationSettings.settings">
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <LastGenOutput>ApplicationSettings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="DocumentationTool.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>DocumentationTool.Designer.cs</LastGenOutput>

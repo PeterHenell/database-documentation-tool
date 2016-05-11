@@ -6,6 +6,7 @@ using System.Text;
 using DatabaseMetadata.Entities;
 using System.Collections.ObjectModel;
 using System.Data.Common;
+using ExtendedPropertiesDocumentationTool;
 
 namespace DatabaseMetadata.DataAccess
 {
@@ -51,94 +52,6 @@ namespace DatabaseMetadata.DataAccess
         }
 
 
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="connStr"></param>
-        ///// <returns></returns>
-        //public string GenerateWikiMarkupForViews(string connStr)
-        //{
-        //    return GenerateWikiMarkupForViews(connStr, null);
-        //}
-
-
-
-//        /// <summary>
-//        /// 
-//        /// </summary>
-//        /// <param name="connStr"></param>
-//        /// <param name="tmd"></param>
-//        /// <returns></returns>
-//        public string GenerateWikiMarkupForViews(string connStr, ViewMetadata tmd)
-//        {
-//            StringBuilder sb = new StringBuilder();
-//            string result = string.Empty;
-//            string sql = @"
-//                            ;
-//with InformationSchemaViews as 
-//(	
-//	  SELECT		    
-//		 name as View_name,
-//	     SCHEMA_NAME(schema_id ) as View_Schema
-//	  FROM 
-//		 sys.objects 
-//	  where 
-//		type = 'u' and is_ms_shipped = 0
-//)
-//
-//SELECT 
-//	WikiMarkup FROM 
-//	InformationSchemaViews iss
-//	CROSS APPLY(
-//		SELECT 'h2. ' + iss.View_SCHEMA + '.' + iss.View_NAME + ' View' WikiMarkup UNION ALL
-//
-//		SELECT ISNULL( 
-//					( SELECT CAST(VALUE AS NVARCHAR(MAX)) FROM fn_listextendedProperty('Description', 
-//					 'SCHEMA', iss.View_SCHEMA
-//					 ,'View', iss.View_NAME
-//					 , NULL, NULL))
-//			 , '{color:#ff0000}{*}DESCRIPTION MISSING{*}{color}') + ' \\' UNION ALL
-//
-//		SELECT '||COLUMN_NAME|' +  '|IS_NULLABLE|' +  '|DATA_TYPE|' +  '|CHARACTER_MAXIMUM_LENGTH|' +  '|COLUMN_DEFAULT|' + '|Description|' UNION ALL
-//
-//		SELECT '|' + ISNULL(COLUMN_NAME,'') + '|' + ISNULL(IS_NULLABLE,'') + '|' + ISNULL(DATA_TYPE, '') + '|' + ISNULL(CAST(CHARACTER_MAXIMUM_LENGTH AS VARCHAR(50)), 'N/A')  + '|' + ISNULL(COLUMN_DEFAULT, 'none') + '|' + 
-//				ISNULL(
-//					(SELECT CAST(VALUE AS NVARCHAR(MAX)) FROM fn_listextendedProperty('Description', 
-//					 'SCHEMA', iss.View_SCHEMA
-//					 ,'View', iss.View_NAME
-//					 , 'COLUMN', Column_Name))
-//				, '{color:#ff0000}{*}DESCRIPTION MISSING{*}{color}') +' |'
-//
-//		 FROM INFORMATION_SCHEMA.COLUMNS
-//		 WHERE table_name = iss.View_NAME
-//	 ) AllTheGoodies
-//	 
-//                             ";
-
-//            string whereStatement = "";
-//            if (tmd != null)
-//            {
-//                whereStatement = string.Concat("WHERE iss.View_Name = '", tmd.Level1Name, "' and iss.View_schema = '", tmd.Schema, "'");
-//                sql = string.Concat(sql, whereStatement);
-//            }
-
-//            sql = string.Concat(sql, "ORDER BY iss.View_Schema, iss.View_Name");
-
-//            using (DbCommand cmd = CommandFactory.Create(sql, connStr))
-//            {
-//                cmd.Connection.Open();
-
-//                DbDataReader reader = cmd.ExecuteReader();
-//                while (reader.Read())
-//                {
-//                    sb.AppendLine(reader[0].ToString());
-//                }
-//            }
-
-//            return sb.ToString();
-//        }
-
-
         /// <summary>
         /// Get list of all Views and their Descriptions. Will only include user defined Views and are not ms_shipped
         /// </summary>
@@ -148,7 +61,7 @@ namespace DatabaseMetadata.DataAccess
         {
            ObservableCollection<ViewMetadata> Views = new ObservableCollection<ViewMetadata>();
 
-            string sql = @"
+            string sql = string.Format(@"
 ;
 with InformationSchemaViews as 
 (	
@@ -169,13 +82,13 @@ SELECT View_NAME
     InformationSchemaViews iss
     OUTER APPLY
     (
-        SELECT VALUE FROM fn_listextendedProperty('Description', 
+        SELECT VALUE FROM fn_listextendedProperty('{0}', 
                 'SCHEMA', iss.View_SCHEMA
                 ,'View', iss.View_NAME
                 , NULL, NULL)
     ) descr
         
-        order by View_schema, View_name";
+        order by View_schema, View_name", ApplicationSettings.Default.ExtendedPropKey);
 
 
             using (DbCommand cmd = CommandFactory.Create(sql, connStr))
