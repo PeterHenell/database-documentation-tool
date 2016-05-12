@@ -44,6 +44,7 @@
     <Compile Include="ColumnMetadataAccess.cs" />
     <Compile Include="CommandFactory.cs" />
     <Compile Include="MetadataFacade.cs" />
+    <Compile Include="SqlCommandDumper.cs" />
     <Compile Include="ViewMetadataAccess.cs" />
     <Compile Include="DatabaseMetadataAccess.cs" />
     <Compile Include="Extensions.cs" />
