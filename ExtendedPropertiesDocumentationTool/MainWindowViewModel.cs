@@ -28,6 +28,7 @@ namespace ExtendedPropertiesDocumentationTool
         public DelegateCommand<ViewMetadata> CreateWikiMarkupForSelectedViewCommand { get; private set; }
         public DelegateCommand OpenSqlConnectionBuilder { get; private set; }
 
+        public DelegateCommand<TableMetadata> CreateSQLStatementsForSelectedTableCommand { get; private set; }
 
         public DelegateCommand<StoredProcedureMetaData> CreateWikiMarkupForSelectedStoredProcedureCommand { get; private set; }
         public DelegateCommand<StoredProcedureMetaData> SaveStoreProcedureCommand { get; private set; }
@@ -278,6 +279,13 @@ namespace ExtendedPropertiesDocumentationTool
                     ModalWindows.WikiMarkupDisplay disp = new ModalWindows.WikiMarkupDisplay();
                     disp.Show(result);
                 });
+
+            CreateSQLStatementsForSelectedTableCommand = new DelegateCommand<TableMetadata>(tmd =>
+            {
+                string result = _metaAccess.GenerateSQLStatementForTable(ConnectionString, tmd, Level1Types.Table);
+                ModalWindows.WikiMarkupDisplay disp = new ModalWindows.WikiMarkupDisplay();
+                disp.Show(result);
+            });
         }
 
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;

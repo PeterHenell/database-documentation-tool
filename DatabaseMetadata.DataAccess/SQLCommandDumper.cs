@@ -16,30 +16,31 @@ namespace DatabaseMetadata.DataAccess
         {
             StringBuilder sbCommandText = new StringBuilder();
 
-            sbCommandText.AppendLine("-- BEGIN COMMAND");
+            //sbCommandText.AppendLine("-- BEGIN COMMAND");
 
             // params
-            for (int i = 0; i < sqc.Parameters.Count; i++)
-                logParameterToSqlBatch(sqc.Parameters[i], sbCommandText);
-            sbCommandText.AppendLine("-- END PARAMS");
+            //for (int i = 0; i < sqc.Parameters.Count; i++)
+            //    logParameterToSqlBatch(sqc.Parameters[i], sbCommandText);
+            //sbCommandText.AppendLine("-- END PARAMS");
 
             // command
             if (sqc.CommandType == CommandType.StoredProcedure)
             {
                 sbCommandText.Append("EXEC ");
 
-                bool hasReturnValue = false;
-                for (int i = 0; i < sqc.Parameters.Count; i++)
-                {
-                    if (sqc.Parameters[i].Direction == ParameterDirection.ReturnValue)
-                        hasReturnValue = true;
-                }
-                if (hasReturnValue)
-                {
-                    sbCommandText.Append("@returnValue = ");
-                }
+                //bool hasReturnValue = false;
+                //for (int i = 0; i < sqc.Parameters.Count; i++)
+                //{
+                //    if (sqc.Parameters[i].Direction == ParameterDirection.ReturnValue)
+                //        hasReturnValue = true;
+                //}
+                //if (hasReturnValue)
+                //{
+                //    sbCommandText.Append("@returnValue = ");
+                //}
 
                 sbCommandText.Append(sqc.CommandText);
+                sbCommandText.Append(" ");
 
                 bool hasPrev = false;
                 for (int i = 0; i < sqc.Parameters.Count; i++)
@@ -51,8 +52,9 @@ namespace DatabaseMetadata.DataAccess
                             sbCommandText.Append(", ");
 
                         sbCommandText.Append(cParam.ParameterName);
-                        sbCommandText.Append(" = ");
-                        sbCommandText.Append(cParam.ParameterName);
+                        sbCommandText.Append(" = '");
+                        sbCommandText.Append(cParam.SqlValue);
+                        sbCommandText.Append("'");
 
                         if (cParam.Direction.HasFlag(ParameterDirection.Output))
                             sbCommandText.Append(" OUTPUT");
@@ -66,8 +68,8 @@ namespace DatabaseMetadata.DataAccess
                 sbCommandText.AppendLine(sqc.CommandText);
             }
 
-            sbCommandText.AppendLine("-- RESULTS");
-            sbCommandText.Append("SELECT 1 as Executed");
+            //sbCommandText.AppendLine("-- RESULTS");
+            //sbCommandText.Append("SELECT 1 as Executed");
             for (int i = 0; i < sqc.Parameters.Count; i++)
             {
                 var cParam = sqc.Parameters[i];
@@ -87,7 +89,7 @@ namespace DatabaseMetadata.DataAccess
             }
             sbCommandText.AppendLine(";");
 
-            sbCommandText.AppendLine("-- END COMMAND");
+            //sbCommandText.AppendLine("-- END COMMAND");
             return sbCommandText.ToString();
         }
 

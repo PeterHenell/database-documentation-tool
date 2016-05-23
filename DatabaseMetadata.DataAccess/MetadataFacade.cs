@@ -101,5 +101,21 @@ namespace DatabaseMetadata.DataAccess
             }
             
         }
+
+        public string GenerateSQLStatementForTable(string ConnectionString, TableMetadata table, Level1Types level1Types)
+        {
+            if (table != null)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine(mab.GetSQLQueryText(table, ConnectionString));
+                foreach (var col in table.Columns)
+                {
+                    sb.AppendLine(mab.GetSQLQueryText(col, ConnectionString));
+                }
+                return sb.ToString();
+            }
+            else
+                return "No Selected Table";
+        }
     }
 }

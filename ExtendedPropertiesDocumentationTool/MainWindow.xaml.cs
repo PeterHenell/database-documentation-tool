@@ -20,7 +20,6 @@ namespace ExtendedPropertiesDocumentationTool
     /// </summary>
     public partial class MainWindow : Window
     {
-
         MainWindowViewModel _viewModel;
 
         public MainWindow()
@@ -30,33 +29,21 @@ namespace ExtendedPropertiesDocumentationTool
             Loaded += new RoutedEventHandler(MainWindow_Loaded);
         }
 
-        void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        public MainWindow(MainWindowViewModel vm)
         {
-            _viewModel = new MainWindowViewModel();
-            this.DataContext = _viewModel;
+            InitializeComponent();
+            this._viewModel = vm;
+            Loaded += new RoutedEventHandler(MainWindow_Loaded);
         }
 
-    
-        //private void Button_Click(object sender, RoutedEventArgs e)
-        //{
-        //    _viewModel.SaveChangesForTable();
-        //}
-
-        //private void Button_Click_1(object sender, RoutedEventArgs e)
-        //{
-           
+        void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (_viewModel == null)
+            {
+                _viewModel = new MainWindowViewModel();
+            }
             
-        //}
-
-        //private void Button_Click_2(object sender, RoutedEventArgs e)
-        //{
-           
-        //}
-
-        //private void Button_Click_3(object sender, RoutedEventArgs e)
-        //{
-          
-        //}
-
+            this.DataContext = _viewModel;
+        }
     }
 }

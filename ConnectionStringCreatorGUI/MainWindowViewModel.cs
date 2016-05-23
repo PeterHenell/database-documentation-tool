@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ConnectionStringCreatorGUI
 {
-    internal class ConnectionStringBuilderWindowViewModel : System.ComponentModel.INotifyPropertyChanged
+    public class ConnectionStringBuilderWindowViewModel : System.ComponentModel.INotifyPropertyChanged
     {
         public DelegateCommand OkClickCommand { get; private set; }
 
