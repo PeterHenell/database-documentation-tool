@@ -4,4 +4,18 @@ GUI for managing documentation of tables, columns, views, stored procedures, fun
 When documentation have been added for each object (or some of them) you can create a wiki markup version for an entire database.
 This generated documentation can then be pasted directly into confluence (or other wiki system).
 
+# New in release 1.7
+It is now possible to generate SQL Statements which will add or update the extended properties. 
+```SQL
+  EXEC sys.sp_addextendedproperty 
+      @value = 'The username of the owner of the account', 
+      @name = 'MS_Description', 
+      @level0type = 'SCHEMA', 
+      @level0name = 'Accounting', 
+      @level1type = 'Table', 
+      @level1name = 'account', 
+      @level2type = 'Column', 
+      @level2name = 'UserName';
+``` 
+
 ![Editing extended properties of a table](dbDoc tool.png)
