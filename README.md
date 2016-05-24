@@ -4,6 +4,8 @@ GUI for managing documentation of tables, columns, views, stored procedures, fun
 When documentation have been added for each object (or some of them) you can create a wiki markup version for an entire database.
 This generated documentation can then be pasted directly into confluence (or other wiki system).
 
+Download the latest version here https://github.com/PeterHenell/database-documentation-tool/tree/master/released-binaries
+
 # New in release 1.8
 It is now possible to generate SQL Statements which will add or update the extended properties. 
 ```SQL
