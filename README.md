@@ -18,4 +18,5 @@ It is now possible to generate SQL Statements which will add or update the exten
       @level2name = 'UserName';
 ``` 
 
+Screen:
 ![Editing extended properties of a table](dbDoc tool.png)
