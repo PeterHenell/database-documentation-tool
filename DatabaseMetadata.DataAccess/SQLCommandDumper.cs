@@ -40,7 +40,7 @@ namespace DatabaseMetadata.DataAccess
                 //}
 
                 sbCommandText.Append(sqc.CommandText);
-                sbCommandText.Append(" ");
+                sbCommandText.AppendLine(" ");
 
                 bool hasPrev = false;
                 for (int i = 0; i < sqc.Parameters.Count; i++)
@@ -49,9 +49,9 @@ namespace DatabaseMetadata.DataAccess
                     if (cParam.Direction != ParameterDirection.ReturnValue)
                     {
                         if (hasPrev)
-                            sbCommandText.Append(", ");
+                            sbCommandText.AppendLine(", ");
 
-                        sbCommandText.Append(cParam.ParameterName);
+                        sbCommandText.Append("    " + cParam.ParameterName);
                         sbCommandText.Append(" = '");
                         sbCommandText.Append(cParam.SqlValue);
                         sbCommandText.Append("'");
