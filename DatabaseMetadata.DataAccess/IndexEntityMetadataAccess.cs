@@ -35,7 +35,7 @@ OUTER APPLY
 	SELECT VALUE FROM FN_LISTEXTENDEDPROPERTY('{2}', 
 		 'SCHEMA', '{1}'
 		 ,'TABLE', '{0}'
-		 ,CASE is_unique WHEN 1 THEN 'CONSTRAINT' ELSE 'INDEX' END, name)
+		 ,'Index', name)
 
 ) descr
 WHERE 

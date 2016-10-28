@@ -112,6 +112,10 @@ namespace DatabaseMetadata.DataAccess
                 {
                     sb.AppendLine(mab.GetSQLQueryText(col, ConnectionString));
                 }
+                foreach (var ix in table.Indexes)
+                {
+                    sb.AppendLine(mab.GetSQLQueryText(ix, ConnectionString));
+                }
                 return sb.ToString();
             }
             else

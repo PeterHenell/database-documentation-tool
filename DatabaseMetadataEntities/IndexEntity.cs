@@ -18,13 +18,14 @@ namespace DatabaseMetadata.Entities
             TypeDescription = typeDescription;
             IsPrimaryKey = isPrimaryKey;
             IsUnique = isUnique;
-            IsUniqueConstraint = isNewDescription;
+            IsUniqueConstraint = isUniqueConstraint;
             HasFilter = hasFilter;
             FillFactor = fillFactor;
             FilterDefinition = filterDefinition;
 
             this.Level1Type = Level1Types.Table;
-            this.Level2Type = isUnique ? Level2Types.Constraint : Level2Types.Index;
+            //this.Level2Type = isUnique ? Level2Types.Constraint : Level2Types.Index;
+            this.Level2Type = Level2Types.Index;
         }
 
         int _id;
