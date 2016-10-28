@@ -21,4 +21,4 @@ It is now possible to generate SQL Statements which will add or update the exten
 ``` 
 
 Screen:
-![Editing extended properties of a table](dbDoc tool.png)
+![Editing extended properties of a table](editProperties.png)
