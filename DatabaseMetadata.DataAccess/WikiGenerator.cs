@@ -147,7 +147,7 @@ CROSS APPLY(
             string result = string.Empty;
             StringBuilder sb = new StringBuilder();
 
-            string sql = string.Format(@" 
+            string sql = @" 
                     SELECT 
                         WikiMarkup
      
@@ -162,7 +162,7 @@ CROSS APPLY(
                                     ISNULL( (SELECT    CAST(VALUE AS NVARCHAR(MAX))
                                     FROM 
                                         fn_listextendedProperty(
-                                            '{0}'
+                                            @ExtendedPropertyName
                                             , 'SCHEMA', SCHEMA_NAME(so.schema_id)
                                             ,'PROCEDURE', so.Name
                                             , NULL, NULL)), '{color:#ff0000}{*}DESCRIPTION MISSING{*}{color}')
@@ -201,7 +201,7 @@ CROSS APPLY(
                             sys.parameters p
                         outer  APPLY
                             fn_listextendedProperty(
-                                 '{0}'
+                                 @ExtendedPropertyName
                                 ,'SCHEMA', SCHEMA_NAME(so.schema_id) 
                                 ,'PROCEDURE', so.Name
                                 ,'PARAMETER', p.name)
@@ -223,7 +223,7 @@ CROSS APPLY(
                             (@SPName IS NULL or (name = @SPName and schema_id(@SPSchema) = schema_id))
 
                     ORDER BY 
-                        so.name", ApplicationSettings.Default.ExtendedPropKey);
+                        so.name";// ApplicationSettings.Default.ExtendedPropKey);
 
 
 
@@ -234,11 +234,14 @@ CROSS APPLY(
                 {
                     cmd.Parameters.Add(CommandFactory.CreateParameter("SPName", spMetadata.Level1Name));
                     cmd.Parameters.Add(CommandFactory.CreateParameter("SPSchema", spMetadata.Schema));
+                    cmd.Parameters.Add(CommandFactory.CreateParameter("ExtendedPropertyName", ApplicationSettings.Default.ExtendedPropKey));
+                    
                 }
                 else
                 {
                     cmd.Parameters.Add(CommandFactory.CreateParameter("SPName", DBNull.Value));
                     cmd.Parameters.Add(CommandFactory.CreateParameter("SPSchema", DBNull.Value));
+                    cmd.Parameters.Add(CommandFactory.CreateParameter("ExtendedPropertyName", ApplicationSettings.Default.ExtendedPropKey));
                 }
 
                 cmd.Connection.Open();
@@ -291,7 +294,7 @@ SELECT
 		SELECT ISNULL( 
 					( SELECT CAST(VALUE AS NVARCHAR(MAX)) FROM fn_listextendedProperty('{0}', 
 					 'SCHEMA', iss.TABLE_SCHEMA
-					 ,'{0}', iss.TABLE_NAME
+					 ,'{1}', iss.TABLE_NAME
 					 , NULL, NULL))
 			 , '{{color:#ff0000}}{{*}}DESCRIPTION MISSING{{*}}{{color}}') + ' \\' UNION ALL
 
@@ -299,9 +302,9 @@ SELECT
 
 		SELECT '|' + ISNULL(COLUMN_NAME,'') + '|' + ISNULL(IS_NULLABLE,'') + '|' + ISNULL(DATA_TYPE, '') + '|' + ISNULL(CAST(CHARACTER_MAXIMUM_LENGTH AS VARCHAR(50)), 'N/A')  + '|' + ISNULL(COLUMN_DEFAULT, 'none') + '|' + 
 				ISNULL(
-					(SELECT CAST(VALUE AS NVARCHAR(MAX)) FROM fn_listextendedProperty('{0}', 
+					(SELECT CAST(VALUE AS NVARCHAR(MAX)) FROM fn_listextendedProperty('{1}', 
 					 'SCHEMA', iss.TABLE_SCHEMA
-					 ,'{0}', iss.TABLE_NAME
+					 ,'{1}', iss.TABLE_NAME
 					 , 'COLUMN', Column_Name))
 				, '{{color:#ff0000}}{{*}}DESCRIPTION MISSING{{*}}{{color}}') +' |'
 
@@ -309,8 +312,8 @@ SELECT
 		 WHERE TABLE_NAME = iss.TABLE_NAME
 	 ) AllTheGoodies
 	 
-                             ", ApplicationSettings.Default.ExtendedPropKey);
-            sql = string.Format(sql, level1Type.ToString());
+                             ", level1Type.ToString(), ApplicationSettings.Default.ExtendedPropKey);
+            //sql = string.Format(sql, level1Type.ToString());
             string whereStatement = "";
             if (item != null)
             {
