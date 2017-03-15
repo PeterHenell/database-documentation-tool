@@ -8,6 +8,7 @@ using System.Windows;
 using DatabaseMetadata.DataAccess;
 using DatabaseMetadata.Entities;
 using System.Data.Common;
+using Microsoft.Win32;
 
 namespace ExtendedPropertiesDocumentationTool
 {
@@ -186,23 +187,30 @@ namespace ExtendedPropertiesDocumentationTool
             CreateWikiMarkupForTablesCommand = new DelegateCommand( () =>
                 {
                     string result = _metaAccess.GenerateWikiMarkupForTablesAndViews(ConnectionString, null, Level1Types.Table);
-                    ModalWindows.WikiMarkupDisplay disp = new ModalWindows.WikiMarkupDisplay();
-                    disp.Show(result);
+                    var d = new SaveFileDialog();
+                    d.Title = "Save markup to file:";
+                    var res = d.ShowDialog();
+                    System.IO.File.WriteAllText(d.FileName, result);
+
                 });
 
             CreateWikiMarkupForAllIndexesCommand = new DelegateCommand(() =>
             {
                 string result = _metaAccess.CreateWikiMarkupForIndexesOnAllTables(ConnectionString);
-                ModalWindows.WikiMarkupDisplay disp = new ModalWindows.WikiMarkupDisplay();
-                disp.Show(result);
+                var d = new SaveFileDialog();
+                d.Title = "Save markup to file:";
+                var res = d.ShowDialog();
+                System.IO.File.WriteAllText(d.FileName, result);
             });
             
 
             CreateWikiMarkupForSPsCommand = new DelegateCommand( () =>
             {
                 string result = _metaAccess.GenerateWikiMarkupForStoredProcedures(ConnectionString);
-                ModalWindows.WikiMarkupDisplay disp = new ModalWindows.WikiMarkupDisplay();
-                disp.Show(result);
+                var d = new SaveFileDialog();
+                d.Title = "Save markup to file:";
+                var res = d.ShowDialog();
+                System.IO.File.WriteAllText(d.FileName, result);
             });
 
             CreateWikiMarkupForSelectedTableCommand = new DelegateCommand<TableMetadata>(tmd =>
